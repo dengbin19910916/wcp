@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: @project.artifactId@
+  profiles:
+    active: dev
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: true
+    show-sql: false
+  flyway:
+    enabled: false
+---
+spring:
+  profiles: dev
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:~/.h2/wcp
+    username: sa
+    password: 

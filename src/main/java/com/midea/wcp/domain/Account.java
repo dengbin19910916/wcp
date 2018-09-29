@@ -1,8 +1,9 @@
-package com.midea.wcp.model;
+package com.midea.wcp.domain;
 
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * 公众号。
@@ -17,6 +18,6 @@ public class Account {
 
     private String name;
 
-    @ManyToOne
-    private Role role;
+    @ManyToMany
+    private List<Role> roles;
 }

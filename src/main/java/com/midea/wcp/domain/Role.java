@@ -1,4 +1,4 @@
-package com.midea.wcp.model;
+package com.midea.wcp.domain;
 
 import lombok.Data;
 
@@ -6,11 +6,11 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * 协作员。
+ * 角色。
  */
 @Data
 @Entity
-public class Manager {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +18,9 @@ public class Manager {
 
     private String name;
 
-    @OneToMany(mappedBy = "manager")
-    private List<Role> roles;
+    @ManyToMany
+    private List<Manager> managers;
+
+    @ManyToMany
+    private List<Account> accounts;
 }

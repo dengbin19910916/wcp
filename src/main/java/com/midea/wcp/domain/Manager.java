@@ -1,5 +1,6 @@
 package com.midea.wcp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -27,7 +28,7 @@ public class Manager {
      *
      * @return 公众号列表
      */
-    @Transient
+    @JsonIgnore
     public List<Account> getAccounts() {
         return roles.stream().flatMap(role -> role.getAccounts().stream()).collect(Collectors.toList());
     }

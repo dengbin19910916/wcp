@@ -19,8 +19,5 @@ public class Role {
     private String name;
 
     @ManyToMany
-    private List<Manager> managers;
-
-    @ManyToMany
     private List<Account> accounts;
 }

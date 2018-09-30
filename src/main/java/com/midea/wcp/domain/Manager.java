@@ -5,7 +5,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 协作员。
@@ -20,8 +19,17 @@ public class Manager {
 
     private String name;
 
-    @ManyToMany
-    private List<Role> roles;
+    @ManyToOne
+    private Role role;
+
+    /**
+     * 返回当前协作员是否为管理员。
+     *
+     * @return true - 是，false - 不是
+     */
+    public boolean isAdmin() {
+        return role.getType() != null && role.getType() == Role.Type.SUPER;
+    }
 
     /**
      * 返回协作员的所有公众号。
@@ -30,7 +38,7 @@ public class Manager {
      */
     @JsonIgnore
     public List<Account> getAccounts() {
-        return roles.stream().flatMap(role -> role.getAccounts().stream()).collect(Collectors.toList());
+        return role.getAccounts();
     }
 
     /**

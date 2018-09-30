@@ -18,6 +18,25 @@ public class User {
 
     private String name;
 
+    @ManyToMany
+    private List<Tag> tags;
+
     @ManyToMany(mappedBy = "users")
     private List<Account> accounts;
+
+    /**
+     * 用户标签。
+     */
+    @Data
+    @Entity(name = "tag")
+    public static class Tag {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Integer id;
+
+        private String name;
+
+        @ManyToMany(mappedBy = "tags")
+        private List<User> users;
+    }
 }

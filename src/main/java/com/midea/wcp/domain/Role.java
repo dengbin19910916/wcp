@@ -18,9 +18,17 @@ public class Role {
 
     private String name;
 
+    @Enumerated
+    private Type type;
+
     @ManyToMany
     private List<Account> accounts;
 
-    @ManyToMany(mappedBy = "roles")
+    @OneToMany(mappedBy = "role")
     private List<Manager> managers;
+
+    public enum Type {
+        SUPER,
+        COMMON
+    }
 }

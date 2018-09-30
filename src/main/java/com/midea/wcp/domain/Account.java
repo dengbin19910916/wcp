@@ -2,10 +2,8 @@ package com.midea.wcp.domain;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * 公众号。
@@ -19,4 +17,10 @@ public class Account {
     private Integer id;
 
     private String name;
+
+    @ManyToMany
+    private List<User> users;
+
+    @ManyToMany(mappedBy = "accounts")
+    private List<Role> roles;
 }

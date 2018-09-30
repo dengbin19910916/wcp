@@ -10,5 +10,5 @@ import org.springframework.data.rest.core.annotation.RestResource;
 public interface ManagerRepository extends JpaRepository<Manager, Integer> {
 
     @RestResource(path = "/name", rel = "/name")
-    Page<Manager> findByNameLike(@Param("name") String name, Pageable pageable);
+    Page<Manager> findByName(@Param("name") String name, Pageable pageable);
 }

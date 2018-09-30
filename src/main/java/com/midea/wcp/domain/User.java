@@ -6,11 +6,11 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * 角色。
+ * 用户。
  */
 @Data
 @Entity
-public class Role {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,9 +18,6 @@ public class Role {
 
     private String name;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "users")
     private List<Account> accounts;
-
-    @ManyToMany(mappedBy = "roles")
-    private List<Manager> managers;
 }

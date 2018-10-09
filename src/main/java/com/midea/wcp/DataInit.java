@@ -1,10 +1,7 @@
 package com.midea.wcp;
 
 import com.midea.wcp.data.*;
-import com.midea.wcp.model.Account;
-import com.midea.wcp.model.Manager;
-import com.midea.wcp.model.Role;
-import com.midea.wcp.model.User;
+import com.midea.wcp.model.*;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -51,6 +48,7 @@ public class DataInit implements InitializingBean {
             Manager manager = new Manager();
             manager.setId(i);
             manager.setName(managerNames[i - 1]);
+            manager.setGender(GenderType.values()[i % 2]);
             managers.add(manager);
         }
 
@@ -77,6 +75,7 @@ public class DataInit implements InitializingBean {
             User user = new User();
             user.setId(i);
             user.setName(userNames[i - 1]);
+            user.setGender(GenderType.values()[i % 2]);
             users.add(user);
         }
 

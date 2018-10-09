@@ -17,6 +17,18 @@ public class Manager {
 
     private String name;
 
+    @Enumerated
+    private GenderType gender;
+
     @ManyToOne
     private Role role;
+
+    @Override
+    public String toString() {
+        return "Manager{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }

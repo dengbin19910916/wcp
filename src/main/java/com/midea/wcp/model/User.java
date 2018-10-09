@@ -18,11 +18,23 @@ public class User {
 
     private String name;
 
+    @Enumerated
+    private GenderType gender;
+
     @ManyToMany
     private List<Tag> tags;
 
     @ManyToMany(mappedBy = "users")
     private List<Account> accounts;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", tags=" + tags +
+                '}';
+    }
 
     /**
      * 用户标签。
@@ -38,5 +50,13 @@ public class User {
 
         @ManyToMany(mappedBy = "tags")
         private List<User> users;
+
+        @Override
+        public String toString() {
+            return "Tag{" +
+                    "id=" + id +
+                    ", name='" + name + '\'' +
+                    '}';
+        }
     }
 }

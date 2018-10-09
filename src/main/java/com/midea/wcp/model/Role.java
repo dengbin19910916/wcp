@@ -31,4 +31,14 @@ public class Role {
         SUPER,
         COMMON
     }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                ", accounts=" + accounts +
+                '}';
+    }
 }

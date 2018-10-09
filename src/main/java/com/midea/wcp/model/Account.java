@@ -37,4 +37,14 @@ public class Account {
          */
         SERVICE
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                ", users=" + users +
+                '}';
+    }
 }

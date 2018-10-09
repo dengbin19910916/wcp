@@ -1,10 +1,10 @@
 package com.midea.wcp;
 
 import com.midea.wcp.data.*;
-import com.midea.wcp.domain.Account;
-import com.midea.wcp.domain.Manager;
-import com.midea.wcp.domain.Role;
-import com.midea.wcp.domain.User;
+import com.midea.wcp.model.Account;
+import com.midea.wcp.model.Manager;
+import com.midea.wcp.model.Role;
+import com.midea.wcp.model.User;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

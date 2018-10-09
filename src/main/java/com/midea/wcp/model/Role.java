@@ -1,4 +1,4 @@
-package com.midea.wcp.domain;
+package com.midea.wcp.model;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.midea.wcp.model;
+package com.midea.wcp.site.model;
 
 import lombok.Data;
 
@@ -15,6 +15,8 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    private String openid;
 
     private String name;
 

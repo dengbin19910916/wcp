@@ -2,13 +2,13 @@ package com.midea.wcp;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
-import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
+import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.Type;
 
 @Configuration
-public class RepositoryConfig extends RepositoryRestConfigurerAdapter {
+public class RepositoryConfig implements RepositoryRestConfigurer {
 
     private final EntityManager entityManager;
 

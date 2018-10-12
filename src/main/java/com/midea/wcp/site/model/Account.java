@@ -1,4 +1,4 @@
-package com.midea.wcp.model;
+package com.midea.wcp.site.model;
 
 import lombok.Data;
 
@@ -6,15 +6,17 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * 角色。
+ * 公众号。
  */
 @Data
 @Entity
-public class Role {
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    private String appid;
 
     private String name;
 
@@ -22,23 +24,29 @@ public class Role {
     private Type type;
 
     @ManyToMany
-    private List<Account> accounts;
+    private List<User> users;
 
-    @OneToMany(mappedBy = "role")
-    private List<Manager> managers;
+    @ManyToMany(mappedBy = "accounts")
+    private List<Role> roles;
 
     public enum Type {
-        SUPER,
-        COMMON
+        /**
+         * 订阅号。
+         */
+        SUBSCRIPTION,
+        /**
+         * 服务号。
+         */
+        SERVICE
     }
 
     @Override
     public String toString() {
-        return "Role{" +
+        return "Account{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", type=" + type +
-                ", accounts=" + accounts +
+                ", users=" + users +
                 '}';
     }
 }

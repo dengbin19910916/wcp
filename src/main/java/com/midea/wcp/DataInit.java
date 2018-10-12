@@ -1,7 +1,7 @@
 package com.midea.wcp;
 
-import com.midea.wcp.data.*;
-import com.midea.wcp.model.*;
+import com.midea.wcp.site.data.*;
+import com.midea.wcp.site.model.*;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,8 @@ public class DataInit implements InitializingBean {
     public DataInit(ManagerRepository managerRepository,
                     RoleRepository roleRepository,
                     AccountRepository accountRepository,
-                    UserRepository userRepository, TagRepository tagRepository) {
+                    UserRepository userRepository,
+                    TagRepository tagRepository) {
         this.managerRepository = managerRepository;
         this.roleRepository = roleRepository;
         this.accountRepository = accountRepository;
@@ -38,6 +39,11 @@ public class DataInit implements InitializingBean {
                 "张三三", "李四四", "王五五", "赵六六",
                 "张三四", "李四五", "王五六", "赵六七",
         };
+        String[] uids = new String[] {
+            "zhangsan", "lisi", "wangwu", "zhaoliu",
+            "zhangss", "liss", "wangww", "zhaoll",
+            "zhangss1", "lisw", "wangwl", "zhaolq"
+        };
         String[] roleNames = new String[]{"集团超级管理员", "事业部超级管理员", "服务号超级管理员", "普通管理员"};
         String[] accountNames = new String[]{"美的云服务", "美的米管家", "美云智数-美信云", "美云智数-智造云"};
         String[] userNames = new String[]{"用户1", "用户2", "用户3", "用户4"};
@@ -47,6 +53,7 @@ public class DataInit implements InitializingBean {
         for (int i = 1; i <= managerNames.length; i++) {
             Manager manager = new Manager();
             manager.setId(i);
+            manager.setUid(uids[i - 1]);
             manager.setName(managerNames[i - 1]);
             manager.setGender(GenderType.values()[i % 2]);
             managers.add(manager);

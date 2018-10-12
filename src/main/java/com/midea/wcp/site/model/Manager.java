@@ -1,4 +1,4 @@
-package com.midea.wcp.model;
+package com.midea.wcp.site.model;
 
 import lombok.Data;
 
@@ -15,6 +15,8 @@ public class Manager {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private String uid;
+
     private String name;
 
     @Enumerated
@@ -22,13 +24,4 @@ public class Manager {
 
     @ManyToOne
     private Role role;
-
-    @Override
-    public String toString() {
-        return "Manager{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", role=" + role +
-                '}';
-    }
 }

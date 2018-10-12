@@ -1,4 +1,4 @@
-package com.midea.wcp.model;
+package com.midea.wcp.site.model;
 
 public enum GenderType {
 

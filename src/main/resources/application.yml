@@ -9,6 +9,8 @@ spring:
     open-in-view: true
   flyway:
     enabled: false
+server:
+  port: 8081
 ---
 spring:
   profiles: dev
@@ -19,3 +21,5 @@ spring:
     password:
   jpa:
     show-sql: true
+  dubbo:
+    registry: zookeeper://localhost:2181

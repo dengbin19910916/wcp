@@ -1,7 +1,7 @@
 package com.midea.wcp.site.model.projection;
 
 import com.midea.wcp.site.model.Account;
-import com.midea.wcp.site.model.Manager;
+import com.midea.wcp.site.model.Assistant;
 import com.midea.wcp.site.model.Role;
 import org.springframework.data.rest.core.config.Projection;
 
@@ -14,6 +14,6 @@ public interface InlineAccounts {
     Integer getId();
     String getName();
     Role.Type getType();
-    List<Manager> getManagers();
+    List<Assistant> getManagers();
     List<Account> getAccounts();
 }

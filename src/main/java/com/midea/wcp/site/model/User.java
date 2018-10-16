@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * 用户。
+ * 用户（粉丝）。
  */
 @Data
 @Entity

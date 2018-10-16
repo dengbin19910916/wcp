@@ -25,7 +25,7 @@ public class Role {
     private List<Account> accounts;
 
     @OneToMany(mappedBy = "role")
-    private List<Manager> managers;
+    private List<Assistant> assistants;
 
     public enum Type {
         SUPER,

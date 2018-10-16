@@ -9,7 +9,7 @@ import javax.persistence.*;
  */
 @Data
 @Entity
-public class Manager {
+public class Assistant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,4 +24,8 @@ public class Manager {
 
     @ManyToOne
     private Role role;
+
+    public boolean isAdmin() {
+        return getRole().getType() == Role.Type.SUPER;
+    }
 }

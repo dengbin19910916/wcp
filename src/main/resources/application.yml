@@ -23,3 +23,8 @@ spring:
     show-sql: true
   dubbo:
     registry: zookeeper://localhost:2181
+  security:
+    user:
+      name: user
+      password: user
+      roles: ADMIN

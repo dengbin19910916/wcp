@@ -49,14 +49,14 @@ public class DataInit implements InitializingBean {
         String[] userNames = new String[]{"用户1", "用户2", "用户3", "用户4"};
         String[] tagNames = new String[]{"标签1", "标签2", "标签3", "标签4"};
 
-        List<Manager> managers = new ArrayList<>();
+        List<Assistant> assistants = new ArrayList<>();
         for (int i = 1; i <= managerNames.length; i++) {
-            Manager manager = new Manager();
-            manager.setId(i);
-            manager.setUid(uids[i - 1]);
-            manager.setName(managerNames[i - 1]);
-            manager.setGender(GenderType.values()[i % 2]);
-            managers.add(manager);
+            Assistant assistant = new Assistant();
+            assistant.setId(i);
+            assistant.setUid(uids[i - 1]);
+            assistant.setName(managerNames[i - 1]);
+            assistant.setGender(GenderType.values()[i % 2]);
+            assistants.add(assistant);
         }
 
         List<Role> roles = new ArrayList<>();
@@ -95,8 +95,8 @@ public class DataInit implements InitializingBean {
         }
 
         // 保存数据
-        for (Manager manager : managers) {
-            manager.setRole(roles.get(new Random().nextInt(4)));
+        for (Assistant assistant : assistants) {
+            assistant.setRole(roles.get(new Random().nextInt(4)));
         }
 
         for (Role role : roles) {
@@ -115,6 +115,6 @@ public class DataInit implements InitializingBean {
         userRepository.saveAll(users);
         accountRepository.saveAll(accounts);
         roleRepository.saveAll(roles);
-        managerRepository.saveAll(managers);
+        managerRepository.saveAll(assistants);
     }
 }

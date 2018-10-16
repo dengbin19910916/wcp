@@ -1,6 +1,6 @@
 package com.midea.wcp.site.data;
 
-import com.midea.wcp.site.model.Manager;
+import com.midea.wcp.site.model.Assistant;
 import com.midea.wcp.site.model.projection.InlineRole;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,8 +11,8 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 @RepositoryRestResource(excerptProjection = InlineRole.class)
-public interface ManagerRepository extends JpaRepository<Manager, Integer>, JpaSpecificationExecutor<Manager> {
+public interface ManagerRepository extends JpaRepository<Assistant, Integer>, JpaSpecificationExecutor<Assistant> {
 
     @RestResource
-    Page<Manager> findByUidLikeOrNameLike(@Param("uid") String uid, @Param("name") String name, Pageable pageable);
+    Page<Assistant> findByUidLikeOrNameLike(@Param("uid") String uid, @Param("name") String name, Pageable pageable);
 }

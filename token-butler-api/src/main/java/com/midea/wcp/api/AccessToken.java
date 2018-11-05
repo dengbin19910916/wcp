@@ -1,7 +1,5 @@
 package com.midea.wcp.api;
 
-import lombok.NonNull;
-
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -13,7 +11,7 @@ public class AccessToken implements Serializable {
     private final String value;
     private final Instant expirationTime;
 
-    public AccessToken(@NonNull String accessToken, int expiresIn) {
+    public AccessToken(String accessToken, int expiresIn) {
         this.value = accessToken;
         this.expirationTime = Instant.now().plusSeconds(expiresIn - 300);   // 防止客户端获取的token立即失效，但不能解决并发实现的问题
     }

@@ -1,10 +1,10 @@
 package com.midea.wcp.userporter;
 
-import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
+import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@EnableDubbo
+@EnableDubboConfiguration
 @SpringBootApplication
 public class UserPorterApplication {
 

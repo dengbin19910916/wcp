@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: @project.artifactId@
+  profiles:
+    active: dev
+---
+spring:
+  profiles: dev
+dubbo:
+  application:
+    name: @project.artifactId@
+  registry:
+    address: zookeeper://localhost:2181
+---
+spring:
+  profiles: qa
+dubbo:
+  application:
+    name: @project.artifactId@
+  registry:
+    address: zookeeper://10.16.25.121:2181

@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/wechat/users")
 public class UserPorterController {
 
-    @Reference(check = false)
+    @Reference
     private TokenButler tokenButler;
 
     @GetMapping

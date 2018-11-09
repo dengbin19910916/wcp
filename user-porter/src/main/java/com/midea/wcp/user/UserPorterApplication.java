@@ -1,4 +1,4 @@
-package com.midea.wcp.userporter;
+package com.midea.wcp.user;
 
 import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
 import org.springframework.boot.SpringApplication;

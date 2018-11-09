@@ -1,4 +1,4 @@
-package com.midea.wcp.userporter;
+package com.midea.wcp.user;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

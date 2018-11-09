@@ -26,6 +26,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.51</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
         </dependency>
@@ -55,6 +60,8 @@
         <module>token-butler-api</module>
         <module>token-butler</module>
         <module>user-porter</module>
+        <module>user-brickie</module>
+        <module>commons</module>
     </modules>
 
 

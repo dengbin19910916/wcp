@@ -1,4 +1,4 @@
-package com.midea.wcp.userporter;
+package com.midea.wcp.user;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.gson.JsonArray;
@@ -7,10 +7,7 @@ import com.midea.wcp.api.AccessToken;
 import com.midea.wcp.api.TokenButler;
 import com.midea.wcp.commons.Wechat;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,6 +19,18 @@ public class UserPorterController {
 
     @Reference
     private TokenButler tokenButler;
+
+    private final UserPorterService userPorterService;
+
+    public UserPorterController(UserPorterService userPorterService) {
+        this.userPorterService = userPorterService;
+    }
+
+    @PostMapping
+    @PutMapping
+    public void syncUser(@RequestParam String appId, @RequestParam String appSecret) throws IOException, InterruptedException {
+        userPorterService.syncUser(appId, appSecret);
+    }
 
     @GetMapping
     public List<String> pull(@RequestParam String appId, @RequestParam String appSecret) throws IOException, InterruptedException {

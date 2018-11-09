@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: @project.artifactId@
+  profiles:
+    active: qa
+  flyway:
+    enabled: false
+server:
+  port: 9092
+---
+spring:
+  profiles: dev
+---
+spring:
+  profiles: qa
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://10.16.18.182:3306/wcp_beta?userUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    username: wx_user
+    password: Weixin12389
+  elasticsearch:
+    rest:
+      uris:
+      - http://10.18.37.105:9200
+    jest:
+      uris:
+      - http://10.18.37.105:9200
+---
+spring:
+  profiles: prod

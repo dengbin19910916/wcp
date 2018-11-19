@@ -7,6 +7,7 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -20,6 +21,15 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 @Slf4j
 @Component
 public class Brickie {
+
+    @Value("${spring.datasource.driver-class-name}")
+    private String driverClassName;
+    @Value("${spring.datasource.url}")
+    private String url;
+    @Value("${spring.datasource.username}")
+    private String username;
+    @Value("${spring.datasource.password}")
+    private String password;
 
     private final RestHighLevelClient client;
 
@@ -69,7 +79,7 @@ public class Brickie {
         } catch (Exception ignored) {
         }
 
-        Class.forName("com.mysql.cj.jdbc.Driver");
+        Class.forName(driverClassName);
         Connection connection = getConnection();
         Connection conn = getConnection();
 
@@ -144,10 +154,7 @@ public class Brickie {
     }
 
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(
-                "jdbc:mysql://10.16.18.182:3306/wcp_beta?userUnicode=true&characterEncoding=utf-8&allowMultiQueries=true",
-                "wx_user",
-                "Weixin12389");
+        return DriverManager.getConnection(url, username, password);
     }
 
     @SneakyThrows

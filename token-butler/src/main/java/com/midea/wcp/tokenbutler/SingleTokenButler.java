@@ -22,6 +22,12 @@ public class SingleTokenButler implements TokenButler {
 
     private volatile ConcurrentHashMap<String, AccessToken> accessTokens = new ConcurrentHashMap<>();
 
+    private final HttpClient client;
+
+    public SingleTokenButler(HttpClient client) {
+        this.client = client;
+    }
+
     /**
      * 返回一个有效的access_token。
      */
@@ -35,7 +41,7 @@ public class SingleTokenButler implements TokenButler {
                         String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential" +
                                 "&appid=" + appId +
                                 "&secret=" + appSecret;
-                        JsonObject tokenJson = getAccessToken(url);
+                        JsonObject tokenJson = getAccessTokenJson(url);
 
                         if (tokenJson.has("errcode")) {
                             log.error("获取access_token失败，{}", tokenJson.toString());
@@ -55,8 +61,7 @@ public class SingleTokenButler implements TokenButler {
         return accessToken;
     }
 
-    private JsonObject getAccessToken(String url) throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
+    private JsonObject getAccessTokenJson(String url) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .build();

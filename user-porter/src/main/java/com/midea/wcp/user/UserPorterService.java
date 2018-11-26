@@ -20,8 +20,8 @@ public class UserPorterService {
         this.userPorter = userPorter;
     }
 
-    public void syncUser(String appId, String appSecret) throws IOException, InterruptedException {
-        AccessToken accessToken = tokenButler.get(appId, appSecret);
+    public void syncUser(String appId, String appSecret, String host, Integer port) throws IOException, InterruptedException {
+        AccessToken accessToken = tokenButler.get(appId, appSecret, host, port);
         userPorter.pull(accessToken);
     }
 }

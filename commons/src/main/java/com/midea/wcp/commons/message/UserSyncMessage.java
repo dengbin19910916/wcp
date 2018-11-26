@@ -12,4 +12,6 @@ public class UserSyncMessage {
     private String appId;
     private String appSecret;
     private String openId;
+    private String host;
+    private Integer port;
 }

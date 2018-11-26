@@ -30,33 +30,37 @@ public class UserPorterController {
 
     @PostMapping
     @PutMapping
-    public void syncUser(@RequestParam String appId, @RequestParam String appSecret) throws IOException, InterruptedException {
-        userPorterService.syncUser(appId, appSecret);
+    public void syncUser(@RequestParam String appId, @RequestParam String appSecret,
+                         @RequestParam(required = false) String host, @RequestParam(required = false) Integer port)
+            throws IOException, InterruptedException {
+        userPorterService.syncUser(appId, appSecret, host, port);
     }
 
     @GetMapping
-    public String pull(@RequestParam String appId, @RequestParam String appSecret) throws IOException, InterruptedException {
-        AccessToken accessToken = tokenButler.get(appId, appSecret);
+    public String pull(@RequestParam String appId, @RequestParam String appSecret,
+                       @RequestParam(required = false) String host, @RequestParam(required = false) Integer port)
+            throws IOException, InterruptedException {
+        AccessToken accessToken = tokenButler.get(appId, appSecret, host, port);
         String url = "https://api.weixin.qq.com/cgi-bin/user/get?" +
                 "access_token=" + accessToken.value() +
                 "&next_openid=";
         JsonObject usersJson = Wechat.getResponse(url);
-        send(appId, appSecret, usersJson.get("data").getAsJsonObject().get("openid").getAsJsonArray());
+        send(appId, appSecret, usersJson.get("data").getAsJsonObject().get("openid").getAsJsonArray(), host, port);
         String nextOpenId = usersJson.get("next_openid").getAsString();
         while (StringUtils.isEmpty(usersJson.get("next_openid").getAsString())) {
             url = "https://api.weixin.qq.com/cgi-bin/user/get?" +
                     "access_token=" + accessToken.value() +
                     "&next_openid=" + nextOpenId;
             usersJson = Wechat.getResponse(url);
-            send(appId, appSecret, usersJson.get("data").getAsJsonObject().get("openid").getAsJsonArray());
+            send(appId, appSecret, usersJson.get("data").getAsJsonObject().get("openid").getAsJsonArray(), host, port);
         }
 
         return usersJson.get("next_openid").getAsString();
     }
 
-    private void send(String appId, String appSecret, JsonArray users) {
+    private void send(String appId, String appSecret, JsonArray users, String host, Integer port) {
         users.iterator().forEachRemaining(user -> {
-            rabbitTemplate.convertAndSend(new UserSyncMessage(appId, appSecret, user.getAsString()));
+            rabbitTemplate.convertAndSend(new UserSyncMessage(appId, appSecret, user.getAsString(), host, port));
         });
     }
 }

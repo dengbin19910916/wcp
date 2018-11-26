@@ -27,7 +27,7 @@ public class UserBrickie {
 
     @RabbitHandler
     public void persistence(UserSyncMessage message) throws IOException, InterruptedException {
-        AccessToken accessToken = tokenButler.get(message.getAppId(), message.getAppSecret());
+        AccessToken accessToken = tokenButler.get(message.getAppId(), message.getAppSecret(), message.getHost(), message.getPort());
         String url = "https://api.weixin.qq.com/cgi-bin/user/info?" +
                 "access_token=" + accessToken.value() +
                 "&openid=" + message.getOpenId() +

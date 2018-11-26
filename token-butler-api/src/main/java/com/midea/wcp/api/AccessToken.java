@@ -13,7 +13,7 @@ public class AccessToken implements Serializable {
 
     public AccessToken(String accessToken, int expiresIn) {
         this.value = accessToken;
-        this.expirationTime = Instant.now().plusSeconds(expiresIn - 300);   // 防止客户端获取的token立即失效，但不能解决并发实现的问题
+        this.expirationTime = Instant.now().plusSeconds(expiresIn - 600);   // 防止客户端获取的token立即失效，但不能解决并发实现的问题
     }
 
     /**

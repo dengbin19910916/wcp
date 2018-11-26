@@ -10,7 +10,10 @@ public interface TokenButler {
      *
      * @param appId     公众号ID
      * @param appSecret 公众号密钥
+     * @param host      代理服务器的地址
+     * @param port      代理服务器的端口
      * @return access_token最少具有300秒的有效期
      */
-    AccessToken get(String appId, String appSecret);
+    AccessToken get(String appId, String appSecret,
+                    String host, Integer port);
 }

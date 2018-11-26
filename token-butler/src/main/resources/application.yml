@@ -15,18 +15,8 @@ spring:
   profiles: qa
   dubbo:
     registry: zookeeper://10.16.25.121:2181
-wcp:
-  http:
-    proxy:
-      host: weixincs.midea.com
-      port: 8090
 ---
 spring:
   profiles: prod
   dubbo:
     registry: zookeeper://10.16.25.121:2181
-wcp:
-  http:
-    proxy:
-      host: weixin.midea.com
-      port: 3128

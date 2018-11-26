@@ -19,8 +19,11 @@ public class TokenController {
     }
 
     @GetMapping
-    public AccessTokenView getToken(@RequestParam String appId, @RequestParam String appSecret) {
-        return new AccessTokenView(tokenButler.get(appId, appSecret));
+    public AccessTokenView getToken(@RequestParam String appId,
+                                    @RequestParam String appSecret,
+                                    @RequestParam(required = false) String host,
+                                    @RequestParam(required = false) Integer port) {
+        return new AccessTokenView(tokenButler.get(appId, appSecret, host, port));
     }
 
     @SuppressWarnings("unused")

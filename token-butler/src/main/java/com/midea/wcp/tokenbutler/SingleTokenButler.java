@@ -9,6 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ProxySelector;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -22,17 +25,12 @@ public class SingleTokenButler implements TokenButler {
 
     private volatile ConcurrentHashMap<String, AccessToken> accessTokens = new ConcurrentHashMap<>();
 
-    private final HttpClient client;
-
-    public SingleTokenButler(HttpClient client) {
-        this.client = client;
-    }
-
     /**
      * 返回一个有效的access_token。
      */
     @Override
-    public AccessToken get(String appId, String appSecret) {
+    public AccessToken get(String appId, String appSecret,
+                           String host, Integer port) {
         AccessToken accessToken = accessTokens.get(appId);
         if (accessToken == null || accessToken.isExpired()) {
             synchronized (this) {
@@ -41,7 +39,7 @@ public class SingleTokenButler implements TokenButler {
                         String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential" +
                                 "&appid=" + appId +
                                 "&secret=" + appSecret;
-                        JsonObject tokenJson = getAccessTokenJson(url);
+                        JsonObject tokenJson = getAccessTokenJson(url, host, port);
 
                         if (tokenJson.has("errcode")) {
                             log.error("获取access_token失败，{}", tokenJson.toString());
@@ -61,7 +59,11 @@ public class SingleTokenButler implements TokenButler {
         return accessToken;
     }
 
-    private JsonObject getAccessTokenJson(String url) throws IOException, InterruptedException {
+    private JsonObject getAccessTokenJson(String url, String host, Integer port) throws IOException, InterruptedException {
+        HttpClient client = host == null ? HttpClient.newHttpClient() :
+                HttpClient.newBuilder()
+                        .proxy(ProxySelector.of(new InetSocketAddress(InetAddress.getByName(host), port)))
+                        .build();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .build();

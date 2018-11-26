@@ -2,7 +2,7 @@ spring:
   application:
     name: @project.artifactId@
   profiles:
-    active: qa
+    active: dev
   flyway:
     enabled: false
 server:
@@ -10,6 +10,8 @@ server:
 ---
 spring:
   profiles: dev
+  dubbo:
+    registry: zookeeper://localhost:2181
 ---
 spring:
   profiles: qa

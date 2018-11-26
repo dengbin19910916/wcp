@@ -2,7 +2,7 @@ spring:
   application:
     name: @project.artifactId@
   profiles:
-    active: qa
+    active: dev
 server:
   port: 9090
 ---

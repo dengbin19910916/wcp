@@ -26,9 +26,7 @@ public class UserPorter {
     public void pull(AccessToken accessToken) throws IOException, InterruptedException {
         JsonObject usersJson = Wechat.getResponse(getUrl(accessToken.value(), null));
         JsonArray users = usersJson.get("data").getAsJsonObject().get("openid").getAsJsonArray();
-        StreamSupport.stream(users.spliterator(), true).forEach(user -> {
-            amqpTemplate.convertAndSend(user.getAsString());
-        });
+        StreamSupport.stream(users.spliterator(), true).forEach(user -> amqpTemplate.convertAndSend(user.getAsString()));
         String nextOpenId = usersJson.get("next_openid").getAsString();
         while (StringUtils.isEmpty(usersJson.get("next_openid").getAsString())) {
             usersJson = Wechat.getResponse(getUrl(accessToken.value(), nextOpenId));

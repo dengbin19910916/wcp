@@ -60,6 +60,6 @@ public class UserPorterController {
 
     private void send(String appId, String appSecret, JsonArray users, String host, Integer port) {
         users.iterator().forEachRemaining(user ->
-                rabbitTemplate.convertAndSend(new UserSyncMessage(appId, appSecret, user.getAsString(), host, port)));
+                rabbitTemplate.convertAndSend("sync-user","WeChat",new UserSyncMessage(appId, appSecret, user.getAsString(), host, port)));
     }
 }

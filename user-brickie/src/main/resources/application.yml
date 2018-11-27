@@ -2,11 +2,11 @@ spring:
   application:
     name: @project.artifactId@
   profiles:
-    active: dev
+    active: qa
   flyway:
     enabled: false
 server:
-  port: 9092
+  port: 9095
 ---
 spring:
   profiles: dev
@@ -27,6 +27,17 @@ spring:
     jest:
       uris:
       - http://10.18.37.105:9200
+  dubbo:
+    registry: zookeeper://10.16.25.121:2182
+  rabbitmq:
+    host: 10.16.41.230
+    username: admin
+    password: admin
+    listener:
+      simple:
+        concurrency: 10
+    port: 5672
+
 ---
 spring:
   profiles: prod

@@ -8,5 +8,6 @@ public class ElasticsearchPersistence implements Persistence {
 
     @Override
     public void save(String appId, User user) {
+        System.out.println("ES持久化=> " + appId + ": " + user);
     }
 }

@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@RabbitListener(queues = "wechat-user")
+@RabbitListener(queues = "wcp-sync-user")
 @Component
 public class UserBrickie {
 
-    @Reference
+    @Reference(check = false)
     private TokenButler tokenButler;
 
     private final CompositePersistence compositePersistence;
@@ -32,7 +32,7 @@ public class UserBrickie {
                 "access_token=" + accessToken.value() +
                 "&openid=" + message.getOpenId() +
                 "&lang=zh_CN";
-        User user = new User(Wechat.getResponse(url));
+        User user = new User(message.getAppId(), Wechat.getResponse(url));
         compositePersistence.save(message.getAppId(), user);
     }
 }

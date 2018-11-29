@@ -2,7 +2,7 @@ spring:
   application:
     name: @project.artifactId@
   profiles:
-    active: qa
+    active: dev
 server:
   port: 9091
 ---
@@ -10,6 +10,13 @@ spring:
   profiles: dev
   dubbo:
     registry: zookeeper://localhost:2181
+  rabbitmq:
+    host: localhost
+    username: guest
+    password: guest
+    port: 5672
+    template:
+      queue: wcp-sync-user
 ---
 spring:
   profiles: qa

@@ -1,30 +1,20 @@
-package com.midea.wcp.commons.model;
+package com.midea.wcp.user.model;
 
-import com.google.gson.JsonObject;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
-import java.util.List;
-
+@Table(name = "sync_detail")
+@Entity
 @Data
-@NoArgsConstructor
-public class User {
+public class SyncDetail implements Serializable {
+
+    private static final long serialVersionUID = -5836388031763020442L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    private String appId;
-
-    @Transient
-    @ManyToMany(mappedBy = "users")
-    private List<Account> accounts;
-
-    @Transient
-    @ManyToMany
-    private List<Account.Tag> tags;
-
 
     private int subscribe;
     private String openid;
@@ -42,8 +32,4 @@ public class User {
     private String subscribe_scene;
     private int qr_scene;
     private String qr_scene_str;
-
-    public User(JsonObject jsonObject) {
-    }
-
 }

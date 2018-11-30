@@ -2,7 +2,7 @@ spring:
   application:
     name: @project.artifactId@
   profiles:
-    active: dev
+    active: qa
   flyway:
     enabled: false
 server:
@@ -17,9 +17,13 @@ spring:
   profiles: qa
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+    #    driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://10.16.18.182:3306/wcp_beta?userUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
     username: wx_user
     password: Weixin12389
+  jpa:
+    show-sql: false
+
   elasticsearch:
     rest:
       uris:

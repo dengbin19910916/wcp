@@ -6,7 +6,7 @@ spring:
   flyway:
     enabled: false
 server:
-  port: 9095
+  port: 9092
 ---
 spring:
   profiles: dev

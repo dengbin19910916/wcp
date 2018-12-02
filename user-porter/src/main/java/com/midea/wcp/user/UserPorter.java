@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class UserPorter {
@@ -28,34 +30,38 @@ public class UserPorter {
     }
 
     @Retryable(value = WechatException.class, maxAttempts = 1)
-    public String pull(String appId, String appSecret, String host, Integer port)
+    String pull(String appId, String appSecret, String host, Integer port)
             throws IOException, InterruptedException {
         AccessToken accessToken = tokenButler.get(appId, appSecret, host, port);
-        String url = "https://api.weixin.qq.com/cgi-bin/user/get?" +
-                "access_token=" + accessToken.value() +
-                "&next_openid=";
-        JsonObject usersJson = Wechat.getResponse(url);
+        String uri = getUri(accessToken.value(), null);
+        JsonObject usersJson = Wechat.getResponse(uri, host, port);
         send(appId, appSecret, usersJson.get("data").getAsJsonObject().get("openid").getAsJsonArray(), host, port);
+
         String nextOpenId = usersJson.get("next_openid").getAsString();
-        while (StringUtils.isEmpty(usersJson.get("next_openid").getAsString())) {
-            url = "https://api.weixin.qq.com/cgi-bin/user/get?" +
-                    "access_token=" + accessToken.value() +
-                    "&next_openid=" + nextOpenId;
-            usersJson = Wechat.getResponse(url);
+        while (StringUtils.isEmpty(nextOpenId)) {
+            uri = getUri(accessToken.value(), nextOpenId);
+            usersJson = Wechat.getResponse(uri, host, port);
             send(appId, appSecret, usersJson.get("data").getAsJsonObject().get("openid").getAsJsonArray(), host, port);
         }
 
         return usersJson.get("next_openid").getAsString();
     }
 
-    private String getUrl(String accessToken, String nextOpenId) {
+    private String getUri(String accessToken, String nextOpenId) {
         return "https://api.weixin.qq.com/cgi-bin/user/get?" +
                 "access_token=" + accessToken +
                 (StringUtils.isEmpty(nextOpenId) ? "" : "&next_openid=" + nextOpenId);
     }
 
     private void send(String appId, String appSecret, JsonArray users, String host, Integer port) {
-        users.iterator().forEachRemaining(user ->
-                amqpTemplate.convertAndSend("wcp-sync-user", new UserSyncMessage(appId, appSecret, user.getAsString(), host, port)));
+        int count = 0;
+        List<String> openIds = new ArrayList<>(100);
+        for (int i = 0; i < users.size(); i++) {
+            openIds.add(users.get(count++).getAsString());
+            if (count == 100 || count == users.size() - 1) {
+                amqpTemplate.convertAndSend("wcp-sync-user", new UserSyncMessage(appId, appSecret, openIds, host, port));
+                count = 0;
+            }
+        }
     }
 }

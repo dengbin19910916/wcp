@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -14,14 +15,14 @@ public class UserSyncMessage implements Serializable {
 
     private String appId;
     private String appSecret;
-    private String openId;
+    private List<String> openIds;
     private String host;
     private Integer port;
 
-    public UserSyncMessage(String appId, String appSecret, String openId) {
+    public UserSyncMessage(String appId, String appSecret, List<String> openIds) {
         this.appId = appId;
         this.appSecret = appSecret;
-        this.openId = openId;
+        this.openIds = openIds;
     }
 
     @Override

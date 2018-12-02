@@ -21,6 +21,10 @@
     <dependencies>
         <dependency>
             <groupId>com.midea.wcp</groupId>
+            <artifactId>commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.midea.wcp</groupId>
             <artifactId>token-butler-api</artifactId>
         </dependency>
         <dependency>

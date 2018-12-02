@@ -1,21 +1,14 @@
 package com.midea.wcp.tokenbutler;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.midea.wcp.api.AccessToken;
 import com.midea.wcp.api.TokenButler;
 import com.midea.wcp.api.WechatException;
+import com.midea.wcp.commons.Wechat;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.ProxySelector;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
@@ -25,9 +18,6 @@ public class SingleTokenButler implements TokenButler {
 
     private volatile ConcurrentHashMap<String, AccessToken> accessTokens = new ConcurrentHashMap<>();
 
-    /**
-     * 返回一个有效的access_token。
-     */
     @Override
     public AccessToken get(String appId, String appSecret,
                            String host, Integer port) {
@@ -36,10 +26,10 @@ public class SingleTokenButler implements TokenButler {
             synchronized (this) {
                 if (accessToken == null || accessToken.isExpired()) {
                     try {
-                        String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential" +
+                        String uri = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential" +
                                 "&appid=" + appId +
                                 "&secret=" + appSecret;
-                        JsonObject tokenJson = getAccessTokenJson(url, host, port);
+                        JsonObject tokenJson = Wechat.getResponse(uri, host, port);
 
                         if (tokenJson.has("errcode")) {
                             log.error("获取access_token失败，{}", tokenJson.toString());
@@ -57,17 +47,5 @@ public class SingleTokenButler implements TokenButler {
         }
 
         return accessToken;
-    }
-
-    private JsonObject getAccessTokenJson(String url, String host, Integer port) throws IOException, InterruptedException {
-        HttpClient client = host == null ? HttpClient.newHttpClient() :
-                HttpClient.newBuilder()
-                        .proxy(ProxySelector.of(new InetSocketAddress(InetAddress.getByName(host), port)))
-                        .build();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return new JsonParser().parse(response.body()).getAsJsonObject();
     }
 }

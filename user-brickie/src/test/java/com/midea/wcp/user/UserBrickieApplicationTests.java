@@ -52,4 +52,10 @@ public class UserBrickieApplicationTests {
         System.out.println(cleanUserMapper.batchUpdateStringById(table, ids, id, newValue));
     }
 
+    @Test
+    public void test4(){
+        List<Integer> result = cleanUserMapper.selectSubZero2One("mp_user_wxd19c5a897bbaaaae","sync_open_id_xxx");
+        System.out.println(result);
+    }
+
 }

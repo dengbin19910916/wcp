@@ -26,10 +26,7 @@ public interface CleanUserMapper {
      * sub 0->1
      */
     @Select("select a.id id from ${tableB} b left join ${tableA} a on b.openid = a.open_id where a.subscribe = 0")
-    @Results({
-            @Result(property = "id", column = "id")
-    })
-    List<Data2Handle> selectSubZero2One(@Param("tableA") String tableA, @Param("tableB") String tableB);
+    List<Integer> selectSubZero2One(@Param("tableA") String tableA, @Param("tableB") String tableB);
 
     /**
      * sub 1->0

@@ -1,6 +1,6 @@
-package com.midea.wcp.user.repository;
+package com.midea.wcp.user.jpa.repository;
 
-import com.midea.wcp.user.model.TestJpa;
+import com.midea.wcp.user.jpa.model.TestJpa;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

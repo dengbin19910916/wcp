@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TestListener {
-    @RabbitListener(queues = "user")
-    public void userListener(UserSyncMessage userSyncMessage){
-        System.out.println("user");
-        System.out.println(userSyncMessage);
-    }
+//    @RabbitListener(queues = "user")
+//    public void userListener(UserSyncMessage userSyncMessage){
+//        System.out.println("user");
+//        System.out.println(userSyncMessage);
+//    }
 
 
 }

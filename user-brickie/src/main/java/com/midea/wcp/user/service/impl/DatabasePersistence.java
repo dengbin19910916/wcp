@@ -1,16 +1,14 @@
 package com.midea.wcp.user.service.impl;
 
 import com.midea.wcp.commons.message.OpenIdWrapper;
-import com.midea.wcp.commons.model.User;
-import com.midea.wcp.user.model.SyncDetail;
-import com.midea.wcp.user.model.SyncOpenId;
-import com.midea.wcp.user.repository.SyncDetailDao;
-import com.midea.wcp.user.repository.SyncOpenIdDao;
-import com.midea.wcp.user.repository.TestSyncDao;
+import com.midea.wcp.user.jpa.model.SyncDetail;
+import com.midea.wcp.user.jpa.model.SyncOpenId;
+import com.midea.wcp.user.jpa.repository.SyncDetailDao;
+import com.midea.wcp.user.jpa.repository.SyncOpenIdDao;
+import com.midea.wcp.user.jpa.repository.TestSyncDao;
 import com.midea.wcp.user.service.Persistence;
 import com.midea.wcp.user.service.SyncUser;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +22,10 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class DatabasePersistence implements Persistence, SyncUser {
 
-    private ThreadPoolExecutor syncUserExecutor = new ThreadPoolExecutor(2, 3, 20,
+    private ThreadPoolExecutor saveOpenIdExecutor = new ThreadPoolExecutor(2, 3, 20,
+            TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
+
+    private ThreadPoolExecutor saveDetailExecutor = new ThreadPoolExecutor(2, 3, 20,
             TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
 
     private final TestSyncDao testSyncDao;
@@ -40,19 +41,45 @@ public class DatabasePersistence implements Persistence, SyncUser {
     }
 
     @Override
-    public void save(String appId, List<User> userList) {
-        List<SyncDetail> syncDetailList = new ArrayList<>();
-        for (User user : userList) {
-            SyncDetail syncDetail = new SyncDetail();
-            BeanUtils.copyProperties(user, syncDetail);
-            syncDetailList.add(syncDetail);
+    public void saveDetail(String appId, List<SyncDetail> syncDetailList) {
+        int size = 300;
+        int idCount = syncDetailList.size();
+        int times = (idCount / size) + 1;
+
+        for (int i = 1; i <= times; i++) {
+            if (i != times) {
+                List<SyncDetail> result = getContinuityDetail((i - 1) * size, i * size - 1, syncDetailList);
+                final int temp = i;
+                saveDetailExecutor.execute(
+                        () -> {
+                            syncDetailDao.saveAll(result);
+                            log.info("完成同步detail:{}->{}", (temp - 1) * size + 1, temp * size);
+                        }
+                );
+            } else {
+                List<SyncDetail> result = getContinuityDetail((i - 1) * size, idCount - 1, syncDetailList);
+                final int temp = i;
+                saveDetailExecutor.execute(
+                        () -> {
+                            syncDetailDao.saveAll(result);
+                            log.info("完成同步detail:{}->{}", (temp - 1) * size + 1, idCount);
+                        }
+                );
+            }
         }
-        syncDetailDao.saveAll(syncDetailList);
+    }
+
+    private List<SyncDetail> getContinuityDetail(int start, int end, List<SyncDetail> target) {
+        List<SyncDetail> result = new ArrayList<>();
+        for (int i = start; i <= end; i++) {
+            result.add(target.get(i));
+        }
+        return result;
     }
 
 
     @Override
-    public void forSync(OpenIdWrapper openIDWrapper) {
+    public void saveOpenid(OpenIdWrapper openIDWrapper) {
         List<String> openIds = openIDWrapper.getOpenIds();
         int size = 200;
         int idCount = openIds.size();
@@ -61,9 +88,9 @@ public class DatabasePersistence implements Persistence, SyncUser {
         for (int i = 1; i <= times; i++) {
             if (i != times) {
                 //不是最后一次
-                List<SyncOpenId> result = getContinuityElement((i - 1) * size, i * size - 1, openIds);
+                List<SyncOpenId> result = getContinuityOpenId((i - 1) * size, i * size - 1, openIds);
                 final int temp = i;
-                syncUserExecutor.execute(
+                saveOpenIdExecutor.execute(
                         () -> {
                             syncOpenIdDao.saveAll(result);
                             log.info("完成同步openId:{}->{}", (temp - 1) * size + 1, temp * size);
@@ -71,9 +98,9 @@ public class DatabasePersistence implements Persistence, SyncUser {
                 );
             } else {
                 //最后一次
-                List<SyncOpenId> result = getContinuityElement((i - 1) * size, idCount - 1, openIds);
+                List<SyncOpenId> result = getContinuityOpenId((i - 1) * size, idCount - 1, openIds);
                 final int temp = i;
-                syncUserExecutor.execute(
+                saveOpenIdExecutor.execute(
                         () -> {
                             syncOpenIdDao.saveAll(result);
                             log.info("完成同步openId:{}->{}", (temp - 1) * size + 1, idCount);
@@ -82,7 +109,7 @@ public class DatabasePersistence implements Persistence, SyncUser {
         }
     }
 
-    private List<SyncOpenId> getContinuityElement(int start, int end, List<String> target) {
+    private List<SyncOpenId> getContinuityOpenId(int start, int end, List<String> target) {
         List<SyncOpenId> result = new ArrayList<>();
         for (int i = start; i <= end; i++) {
             SyncOpenId temp = new SyncOpenId();

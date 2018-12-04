@@ -1,4 +1,4 @@
-package com.midea.wcp.user.model;
+package com.midea.wcp.user.jpa.model;
 
 import lombok.Data;
 

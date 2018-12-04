@@ -8,6 +8,7 @@ import com.midea.wcp.api.TokenButler;
 import com.midea.wcp.commons.Wechat;
 import com.midea.wcp.commons.message.OpenIdWrapper;
 import com.midea.wcp.commons.model.User;
+import com.midea.wcp.user.service.CleanUser;
 import com.midea.wcp.user.service.SyncUser;
 import com.midea.wcp.user.service.impl.CompositePersistence;
 import lombok.extern.slf4j.Slf4j;
@@ -28,46 +29,51 @@ public class UserBrickie {
 
     private final CompositePersistence compositePersistence;
     private final SyncUser syncUser;
+    private final CleanUser cleanUser;
 
     @Autowired
-    public UserBrickie(CompositePersistence compositePersistence, SyncUser syncUser) {
+    public UserBrickie(CompositePersistence compositePersistence, SyncUser syncUser,
+                       CleanUser cleanUser) {
         this.compositePersistence = compositePersistence;
         this.syncUser = syncUser;
+        this.cleanUser = cleanUser;
     }
 
-    @RabbitListener(queues = "gkd")
-    public void persistence(OpenIdWrapper openIDWrapper) throws IOException, InterruptedException {
-        List<User> userList = new ArrayList<>();
-        /*for (String openId : openIDWrapper.getOpenIds()) {
-            AccessToken accessToken = tokenButler.get(openIDWrapper.getAppId(), openIDWrapper.getAppSecret(),
-                    openIDWrapper.getHost(), openIDWrapper.getPort());
-            String url = "https://api.weixin.qq.com/cgi-bin/user/info?" +
-                    "access_token=" + accessToken.value() + "&openid=" + openId + "&lang=zh_CN";
+    @RabbitListener(queues = "openid-detail")
+    public void persistence(OpenIdWrapper openIDWrapper) {
+        try {
+            List<User> userList = new ArrayList<>();
+            for (String openId : openIDWrapper.getOpenIds()) {
+                AccessToken accessToken = tokenButler.get(openIDWrapper.getAppId(), openIDWrapper.getAppSecret(),
+                        openIDWrapper.getHost(), openIDWrapper.getPort());
+                String url = "https://api.weixin.qq.com/cgi-bin/user/info?" +
+                        "access_token=" + accessToken.value() + "&openid=" + openId + "&lang=zh_CN";
 
-            JsonObject userDetails = Wechat.getResponse(url);
-            User result = (User) JsonToObject(userDetails, User.class);
-            userList.add(result);
-        }*/
-        AccessToken accessToken = tokenButler.get(openIDWrapper.getAppId(), openIDWrapper.getAppSecret(),
-                openIDWrapper.getHost(), openIDWrapper.getPort());
-        String url = "https://api.weixin.qq.com/cgi-bin/user/info?" +
-                "access_token=" + accessToken.value() + "&openid=" + openIDWrapper.getOpenIds().get(0) + "&lang=zh_CN";
-        System.out.println(url);
-        JsonObject userDetails = Wechat.getResponse(url);
-        User result = (User) JsonToObject(userDetails, User.class);
-        userList.add(result);
+                JsonObject userDetails = null;
 
-        compositePersistence.save(openIDWrapper.getAppId(), userList);
-    }
+                userDetails = Wechat.getResponse(url, openIDWrapper.getHost(), openIDWrapper.getPort());
 
-    @RabbitListener(queues = "user")
-    public void saveUserToDB(OpenIdWrapper openIDWrapper) {
-        syncUser.forSync(openIDWrapper);
+
+                log.info(userDetails != null ? userDetails.toString() : "空");
+                User result = (User) JsonToObject(userDetails, User.class);
+                userList.add(result);
+            }
+            compositePersistence.process(openIDWrapper.getAppId(), userList);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private Object JsonToObject(JsonObject jsonObject, Class bean) {
         Gson gson = new Gson();
         return gson.fromJson(jsonObject, bean);
     }
+
+
+    @RabbitListener(queues = "openid-sync")
+    public void saveUserToDB(OpenIdWrapper openIDWrapper) {
+        syncUser.saveOpenid(openIDWrapper);
+    }
+
 
 }

@@ -1,6 +1,6 @@
-package com.midea.wcp.user.repository;
+package com.midea.wcp.user.jpa.repository;
 
-import com.midea.wcp.user.model.SyncOpenId;
+import com.midea.wcp.user.jpa.model.SyncOpenId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

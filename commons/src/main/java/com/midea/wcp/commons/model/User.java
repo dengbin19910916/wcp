@@ -43,7 +43,4 @@ public class User {
     private int qr_scene;
     private String qr_scene_str;
 
-    public User(JsonObject jsonObject) {
-    }
-
 }

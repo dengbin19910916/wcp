@@ -39,7 +39,7 @@ public class SingleTokenButler implements TokenButler {
                         accessTokens.put(appId, accessToken);
                         return accessToken;
                     } catch (IOException | InterruptedException e) {
-                        log.error("{}[{}]获取access_token失败", appId, appSecret);
+                        log.error(appId + "[" + appSecret + "]获取access_token失败", e);
                         throw new RuntimeException(appId + "获取access_token失败", e);
                     }
                 }

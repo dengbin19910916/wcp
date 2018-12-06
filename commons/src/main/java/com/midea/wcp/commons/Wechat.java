@@ -18,8 +18,8 @@ public class Wechat {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uri))
                 .build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return new JsonParser().parse(response.body()).getAsJsonObject();
+
+        return getResult(client, request);
     }
 
     public static JsonObject postResponse(String uri, String body, String host, Integer port) throws IOException, InterruptedException {
@@ -28,8 +28,18 @@ public class Wechat {
                 .POST(ofString(body))
                 .uri(URI.create(uri))
                 .build();
+
+        return getResult(client, request);
+    }
+
+    private static JsonObject getResult(HttpClient client, HttpRequest request) throws IOException, InterruptedException {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return new JsonParser().parse(response.body()).getAsJsonObject();
+        JsonObject result = new JsonParser().parse(response.body()).getAsJsonObject();
+        if (!result.get("errcode").isJsonNull() && result.get("errcode").getAsInt() == 40001) {
+            throw WechatExceptionFactory.getWechatException(result);
+        }
+
+        return result;
     }
 
     private static HttpClient getClient(String host, Integer port) throws UnknownHostException {

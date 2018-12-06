@@ -5,7 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.midea.wcp.api.AccessToken;
 import com.midea.wcp.api.TokenButler;
-import com.midea.wcp.api.WechatException;
+import com.midea.wcp.commons.InvalidTokenException;
 import com.midea.wcp.commons.Wechat;
 import com.midea.wcp.commons.message.UserSyncMessage;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -29,7 +29,7 @@ public class UserPorter {
         this.amqpTemplate = amqpTemplate;
     }
 
-    @Retryable(value = WechatException.class, maxAttempts = 1)
+    @Retryable(value = InvalidTokenException.class, maxAttempts = 1)
     String pull(String appId, String appSecret, String host, Integer port)
             throws IOException, InterruptedException {
         AccessToken accessToken = tokenButler.get(appId, appSecret, host, port);

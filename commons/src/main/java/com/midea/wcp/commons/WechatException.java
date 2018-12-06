@@ -1,4 +1,4 @@
-package com.midea.wcp.api;
+package com.midea.wcp.commons;
 
 import com.google.gson.JsonObject;
 

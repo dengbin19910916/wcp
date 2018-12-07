@@ -33,6 +33,7 @@ public class UserPorter {
     String pull(String appId, String appSecret, String host, Integer port)
             throws IOException, InterruptedException {
         AccessToken accessToken = tokenButler.get(appId, appSecret, host, port);
+
         String uri = getUri(accessToken.value(), null);
         JsonObject usersJson = Wechat.getResponse(uri, host, port);
         send(appId, appSecret, usersJson.get("data").getAsJsonObject().get("openid").getAsJsonArray(), host, port);

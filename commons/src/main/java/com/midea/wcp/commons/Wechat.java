@@ -1,5 +1,6 @@
 package com.midea.wcp.commons;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -35,8 +36,11 @@ public class Wechat {
     private static JsonObject getResult(HttpClient client, HttpRequest request) throws IOException, InterruptedException {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         JsonObject result = new JsonParser().parse(response.body()).getAsJsonObject();
-        if (!result.get("errcode").isJsonNull() && result.get("errcode").getAsInt() == 40001) {
-            throw WechatExceptionFactory.getWechatException(result);
+
+        JsonElement errcode = result.get("errcode");
+        if (errcode != null && (errcode.getAsInt() == 40001 || errcode.getAsInt() == 42001)) {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            result = new JsonParser().parse(response.body()).getAsJsonObject();
         }
 
         return result;

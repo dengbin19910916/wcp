@@ -34,16 +34,19 @@ public class Wechat {
     }
 
     private static JsonObject getResult(HttpClient client, HttpRequest request) throws IOException, InterruptedException {
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        JsonObject result = new JsonParser().parse(response.body()).getAsJsonObject();
+        JsonObject result = getResult0(client, request);
 
         JsonElement errcode = result.get("errcode");
-        if (errcode != null && (errcode.getAsInt() == 40001 || errcode.getAsInt() == 42001)) {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            result = new JsonParser().parse(response.body()).getAsJsonObject();
+        if (errcode != null && (errcode.getAsInt() == 40001|| errcode.getAsInt() == 42001)) {  // 40001 - Token无效，42001 - Token过期
+            result = getResult0(client, request);
         }
 
         return result;
+    }
+
+    private static JsonObject getResult0(HttpClient client, HttpRequest request) throws IOException, InterruptedException {
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return new JsonParser().parse(response.body()).getAsJsonObject();
     }
 
     private static HttpClient getClient(String host, Integer port) throws UnknownHostException {

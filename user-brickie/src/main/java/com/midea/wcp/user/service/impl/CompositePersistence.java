@@ -1,7 +1,7 @@
 package com.midea.wcp.user.service.impl;
 
 import com.midea.wcp.commons.model.User;
-import com.midea.wcp.user.jpa.model.SyncDetail;
+import com.midea.wcp.user.mybatis.model.MpUser;
 import com.midea.wcp.user.service.DetailHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +22,18 @@ public class CompositePersistence implements DetailHandler {
         this.elasticsearchPersistence = elasticsearchPersistence;
     }
 
+    /**
+     * 添加其他业务字段
+     */
     @Override
     public void process(String appId, List<User> userList) {
-        //添加其他业务字段
-        List<SyncDetail> syncDetailList = new ArrayList<>();
+        List<MpUser> mpUserList = new ArrayList<>();
         for (Object user : userList) {
-            SyncDetail syncDetail = new SyncDetail();
-            BeanUtils.copyProperties(user, syncDetail);
-            syncDetailList.add(syncDetail);
+            MpUser mpUser = new MpUser();
+            BeanUtils.copyProperties(user, mpUser);
+            mpUserList.add(mpUser);
         }
-        databasePersistence.saveDetail(appId, syncDetailList);
-        elasticsearchPersistence.saveDetail(appId, syncDetailList);
+        databasePersistence.saveDetail(appId, mpUserList);
+        elasticsearchPersistence.saveDetail(appId, mpUserList);
     }
 }

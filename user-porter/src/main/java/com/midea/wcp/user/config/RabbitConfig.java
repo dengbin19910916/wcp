@@ -11,51 +11,36 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitConfig {
     //拉取当前完整openid到数据库表对比用
     @Bean
-    public Queue openidSync() {
-        return new Queue("openid-sync");
+    public Queue openIdQueue() {
+        return new Queue("openIdQueue");
     }
 
     @Bean
-    public TopicExchange sync() {
-        return new TopicExchange("sync");
+    public TopicExchange openIdExchange() {
+        return new TopicExchange("openIdExchange");
     }
 
     @Bean
     public Binding bindingSync() {
-        return BindingBuilder.bind(openidSync()).to(sync()).with("WeChat");
+        return BindingBuilder.bind(openIdQueue()).to(openIdExchange()).with("WeChat");
     }
 
 
-    //拉取所有detail，第一次用
+    //拉取所有detail
     @Bean
-    public Queue openidDetail() {
-        return new Queue("openid-detail");
+    public Queue getDetailQueue() {
+        return new Queue("getDetailQueue");
     }
 
     @Bean
-    public TopicExchange detail() {
-        return new TopicExchange("detail");
+    public TopicExchange getDetailExchange() {
+        return new TopicExchange("getDetailExchange");
     }
 
     @Bean
     public Binding bindingDetail() {
-        return BindingBuilder.bind(openidDetail()).to(detail()).with("WeChat");
+        return BindingBuilder.bind(getDetailQueue()).to(getDetailExchange()).with("WeChat");
     }
 
-    //程序对比
-//    @Bean
-//    public Queue openidContrast() {
-//        return new Queue("openid-contrast");
-//    }
-//
-//    @Bean
-//    public TopicExchange contrast() {
-//        return new TopicExchange("contrast");
-//    }
-//
-//    @Bean
-//    public Binding bindingContrast() {
-//        return BindingBuilder.bind(openidContrast()).to(contrast()).with("WeChat");
-//    }
 
 }

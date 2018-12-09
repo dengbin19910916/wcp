@@ -1,4 +1,4 @@
-package com.midea.wcp.user;
+package com.midea.wcp.user.test;
 
 import com.midea.wcp.commons.message.UserSyncMessage;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -11,6 +11,4 @@ public class TestListener {
 //        System.out.println("user");
 //        System.out.println(userSyncMessage);
 //    }
-
-
 }

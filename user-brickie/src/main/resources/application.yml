@@ -5,6 +5,7 @@ spring:
     active: qa
   flyway:
     enabled: false
+
 server:
   port: 9095
 

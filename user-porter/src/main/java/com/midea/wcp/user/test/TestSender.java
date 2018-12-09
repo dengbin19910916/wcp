@@ -1,4 +1,4 @@
-package com.midea.wcp.user;
+package com.midea.wcp.user.test;
 
 import com.midea.wcp.commons.message.UserSyncMessage;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

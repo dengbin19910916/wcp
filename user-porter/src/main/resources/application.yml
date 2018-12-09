@@ -7,6 +7,9 @@ spring:
 server:
   port: 9091
 
+mybatis:
+  type-aliases-package: com.midea.wcp.user.mybatis.model
+
 ---
 spring:
   profiles: dev
@@ -22,3 +25,9 @@ spring:
     username: admin
     password: admin
     port: 5672
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://10.16.18.182:3306/wcp_beta?userUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    username: wx_user
+    password: Weixin12389

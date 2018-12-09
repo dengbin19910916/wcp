@@ -1,6 +1,6 @@
 package com.midea.wcp.user.mybatis.mapper;
 
-import com.midea.wcp.user.mybatis.model.Data2Handle;
+import com.midea.wcp.user.mybatis.model.MpUser;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -11,64 +11,38 @@ import java.util.List;
  */
 @Mapper
 public interface CleanUserMapper {
-
     /**
-     * duplicate openid
+     * batch save mp user
      */
-    @Select("SELECT a.id id,a.open_id openid FROM ${table} a INNER JOIN ${table} b WHERE a.open_id = b.open_id AND a.id != b.id GROUP BY a.id")
-    @Results({
-            @Result(property = "id", column = "id"),
-            @Result(property = "openid", column = "openid")
-    })
-    List<Data2Handle> selectDuplicateOpenid(@Param("table") String table);
-
-    /**
-     * sub 0->1
-     */
-    @Select("select a.id id from ${tableB} b left join ${tableA} a on b.openid = a.open_id where a.subscribe = 0")
-    List<Integer> selectSubZero2One(@Param("tableA") String tableA, @Param("tableB") String tableB);
-
-    /**
-     * sub 1->0
-     */
-    @Select("select a.id from ${tableA} a left join ${tableB} b on a.open_id = b.openid where b.openid is null and a.subscribe = 1")
-    @Results({
-            @Result(property = "id", column = "id")
-    })
-    List<Data2Handle> selectSubOne2Zero(@Param("tableA") String tableA, @Param("tableB") String tableB);
-
-    /**
-     * 需要添加的openid
-     */
-    @Select("select b.openid openid from ${tableB} b left join ${tableA} a on b.openid = a.open_id where a.open_id is null")
-    @Results({
-            @Result(property = "openid", column = "openid")
-    })
-    List<Data2Handle> selectOpenid2Add(@Param("tableA") String tableA, @Param("tableB") String tableB);
-
-
-    /**
-     * batch update integer
-     */
-    @Update("<script>" +
-            "update ${table} set ${column} = #{newValue} where id in " +
-            "<foreach collection='ids' item='id' open='(' close=')' separator=','>" +
-            "#{id}" +
-            "</foreach>" +
+    @Insert("<script>" +
+            "insert into ${table} " +
+            "(app_id, open_id, union_id, nick_name, sex, " +
+            "sex_id, country, province, city, language, head_img_url, " +
+            "img_id, head_img_catch, subscribe, sub_scribe_time, remark, " +
+            "group_id, source, source_id, created_at, updated_at, " +
+            "mobile, qq, email, contact_status, cancel_subscribe_time, is_bind, uid) " +
+            "values" +
+            "<foreach collection ='list' item='user' separator =','> " +
+            "(#{user.appId},#{user.openId},#{user.unionId},#{user.nickname},#{user.sex}," +
+            "#{user.sexId},#{user.country},#{user.province},#{user.city},#{user.language},#{user.headImgUrl}," +
+            "#{user.imgId},#{user.headImgCatch},#{user.subscribe},#{user.subscribe_time},#{user.remark}," +
+            "#{user.groupId},#{user.source},#{user.sourceId},#{user.createdAt},#{user.updatedAt}," +
+            "#{user.mobile},#{user.qq},#{user.email},#{user.contactStatus},#{user.cancelSubscribeTime},#{user.isBind},#{user.uid})" +
+            "</foreach >" +
             "</script>")
-    Integer batchUpdateIntegerById(@Param("table") String table, @Param("ids") List<Integer> ids,
-                                   @Param("column") String column, @Param("newValue") Integer newValue);
+    Integer batchSaveMpUser(@Param("list") List<MpUser> list, @Param("table") String table);
 
     /**
-     * batch update string
+     * batch save open id
      */
-    @Update("<script>" +
-            "update ${table} set ${column} = #{newValue} where id in " +
-            "<foreach collection='ids' item='id' open='(' close=')' separator=','>" +
-            "#{id}" +
-            "</foreach>" +
+    @Insert("<script>" +
+            "insert into ${table}" +
+            "(openid)" +
+            "values" +
+            "<foreach collection ='list' item='openid' separator =','> " +
+            "(#{openid})" +
+            "</foreach >" +
             "</script>")
-    Integer batchUpdateStringById(@Param("table") String table, @Param("ids") List<Integer> ids,
-                                   @Param("column") String column, @Param("newValue") String newValue);
+    Integer batchSaveOpenId(@Param("list") List<String> list, @Param("table") String table);
 
 }

@@ -1,7 +1,9 @@
 package com.midea.wcp.user;
 
+import com.midea.wcp.user.jpa.model.SyncDetail;
+import com.midea.wcp.user.jpa.repository.SyncDetailDao;
 import com.midea.wcp.user.mybatis.mapper.CleanUserMapper;
-import com.midea.wcp.user.service.CleanUser;
+import com.midea.wcp.user.mybatis.model.MpUser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -16,10 +19,10 @@ import java.util.List;
 public class UserBrickieApplicationTests {
 
     @Autowired
-    private CleanUser cleanUser;
+    private CleanUserMapper cleanUserMapper;
 
     @Autowired
-    private CleanUserMapper cleanUserMapper;
+    private SyncDetailDao syncDetailDao;
 
 
     @Test
@@ -32,30 +35,49 @@ public class UserBrickieApplicationTests {
     }
 
     @Test
-    public void test2() {
-        String table = "sync_open_id_xxx";
-        List<Integer> ids = new ArrayList<>();
-        ids.add(3396);
+    public void test2(){
+        List<SyncDetail> list = new ArrayList<>();
 
-        String id = "id";
-        Integer newValue = 999999;
-        System.out.println(cleanUserMapper.batchUpdateIntegerById(table, ids, id, newValue));
+        SyncDetail detail1 = new SyncDetail();
+        detail1.setAppId("xswl");
+        detail1.setOpenId("xswl");
+        detail1.setCreatedAt(new Date());
+        detail1.setUpdatedAt(new Date());
+        list.add(detail1);
+
+        SyncDetail detail2 = new SyncDetail();
+        detail1.setAppId("gkd");
+        detail1.setOpenId("gkd");
+        detail1.setCreatedAt(new Date());
+        detail1.setUpdatedAt(new Date());
+        list.add(detail2);
+        syncDetailDao.saveAll(list);
     }
+
     @Test
     public void test3(){
-        String table = "sync_open_id_xxx";
-        List<Integer> ids = new ArrayList<>();
-        ids.add(99999);
-
-        String id = "openid";
-        String newValue = "xswl";
-        System.out.println(cleanUserMapper.batchUpdateStringById(table, ids, id, newValue));
+        List<MpUser> list =new ArrayList<>();
+        MpUser mpUser = new MpUser();
+        mpUser.setAppId("xswl");
+        mpUser.setOpenId("xswl");
+        mpUser.setCancelSubscribeTime(new Date());
+        mpUser.setCreatedAt(new Date());
+        mpUser.setUpdatedAt(new Date());
+        mpUser.setUnionId("xswl");
+        mpUser.setEmail("xswl");
+        mpUser.setSubscribe(1);
+        mpUser.setGroupId(555555);
+        mpUser.setContactStatus(55555);
+        list.add(mpUser);
+        list.add(mpUser);
+        cleanUserMapper.batchSaveMpUser(list,"mp_user_wxd19c5a897bbaaaae");
     }
 
     @Test
     public void test4(){
-        List<Integer> result = cleanUserMapper.selectSubZero2One("mp_user_wxd19c5a897bbaaaae","sync_open_id_xxx");
-        System.out.println(result);
+        List<String> list = new ArrayList<>();
+        list.add("gkd");
+        list.add("kkp");
+        cleanUserMapper.batchSaveOpenId(list,"sync_open_id_xxx");
     }
-
 }

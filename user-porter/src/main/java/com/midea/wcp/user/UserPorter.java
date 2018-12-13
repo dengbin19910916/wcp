@@ -39,7 +39,7 @@ public class UserPorter {
         send(appId, appSecret, usersJson.get("data").getAsJsonObject().get("openid").getAsJsonArray(), host, port);
 
         String nextOpenId = usersJson.get("next_openid").getAsString();
-        while (StringUtils.isEmpty(nextOpenId)) {
+        while (!StringUtils.isEmpty(nextOpenId)) {
             uri = getUri(accessToken.value(), nextOpenId);
             usersJson = Wechat.getResponse(uri, host, port);
             send(appId, appSecret, usersJson.get("data").getAsJsonObject().get("openid").getAsJsonArray(), host, port);

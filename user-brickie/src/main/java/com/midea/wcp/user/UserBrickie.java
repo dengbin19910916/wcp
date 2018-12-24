@@ -47,9 +47,13 @@ public class UserBrickie {
     @RabbitListener(queues = "getDetailQueue")
     public void persistence(OpenIdWrapper openIDWrapper) {
         List<User> userList = new ArrayList<>();
+        if (openIDWrapper.getOpenIds() == null) {
+            return;
+        }
         for (String openId : openIDWrapper.getOpenIds()) {
             User result = getUserDetail(openId, openIDWrapper.getAppId(), openIDWrapper.getAppSecret(), openIDWrapper.getHost(), openIDWrapper.getPort());
             if (result != null) {
+                result.setAppId(openIDWrapper.getAppId());
                 userList.add(result);
             }
         }

@@ -61,19 +61,27 @@ public class CleanUserImpl implements CleanUser {
     @Override
     public void setSubZero2One(String originTable, String compareTable) {
         List<Integer> result = cleanUserMapper.selectSubZero2One(originTable, compareTable);
+        if (result == null || result.size() == 0) {
+            return;
+        }
         updateDbInTurn(originTable, result, "subscribe", 1);
     }
 
     @Override
     public void setSubOne2Zero(String originTable, String compareTable) {
         List<Integer> result = cleanUserMapper.selectSubOne2Zero(originTable, compareTable);
+        if (result == null || result.size() == 0) {
+            return;
+        }
         updateDbInTurn(originTable, result, "subscribe", 0);
     }
 
     @Override
     public void pullNullData(String originTable, String compareTable, String appId, String appSecret, String host, Integer port) {
         List<String> result = cleanUserMapper.selectOpenid2Add(originTable, compareTable);
-
+        if (result == null || result.size() == 0) {
+            return;
+        }
         //分批发送
         int size = 100;
         int idCount = result.size();
@@ -83,11 +91,11 @@ public class CleanUserImpl implements CleanUser {
             if (i != times) {
                 List<String> temp = getContinuityElement((i - 1) * size, i * size - 1, result);
                 JsonArray jsonArray = list2JsonArray(temp);
-                rabbitMQUtil.sendToRabbitMQ(appId, appSecret, jsonArray, host, port, "getDetailQueue");
+                rabbitMQUtil.sendToRabbitMQ(appId, appSecret, jsonArray, host, port, "getDetailExchange");
             } else {
                 List<String> temp = getContinuityElement((i - 1) * size, idCount - 1, result);
                 JsonArray jsonArray = list2JsonArray(temp);
-                rabbitMQUtil.sendToRabbitMQ(appId, appSecret, jsonArray, host, port, "getDetailQueue");
+                rabbitMQUtil.sendToRabbitMQ(appId, appSecret, jsonArray, host, port, "getDetailExchange");
             }
         }
     }

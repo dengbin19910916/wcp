@@ -10,9 +10,9 @@ public class MpUser {
 
     private String appId;
 
-    private String openId;
+    private String openid;
 
-    private String unionId;
+    private String unionid;
 
     private String nickname;
 
@@ -28,7 +28,7 @@ public class MpUser {
 
     private String language;
 
-    private String headImgUrl;
+    private String headimgurl;
 
     private String imgId;
 

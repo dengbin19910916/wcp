@@ -3,12 +3,13 @@ package com.midea.wcp.user;
 import com.midea.wcp.user.service.CleanUser;
 import com.midea.wcp.user.service.PullOpenId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 控制粉丝同步流程的类
  */
-@Component
+@RestController
 public class SyncWeChatFans {
     private final PullOpenId pullOpenId;
     private final CleanUser cleanUser;
@@ -19,6 +20,7 @@ public class SyncWeChatFans {
         this.cleanUser = cleanUser;
     }
 
+    @GetMapping("/sync")
     public void gkd(String appId, String appSecret, String host, Integer port) {
         String tableNamePrefix = "mp_user_";
         String openidTablePrefix = "sync_open_id_";
@@ -49,7 +51,7 @@ public class SyncWeChatFans {
             //粉丝取消关注
             cleanUser.setSubOne2Zero(originTable, compareTable);
 
-            //新增订阅的粉丝获取详情，清空openid表
+            //新增订阅的粉丝获取详情
             cleanUser.pullNullData(originTable, compareTable, appId, appSecret, host, port);
 
         } catch (InterruptedException e) {
@@ -62,4 +64,4 @@ public class SyncWeChatFans {
         int saveNum = cleanUser.countOpenId(table);
         return saveNum == totalOpenId;
     }
-}
+    }

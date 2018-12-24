@@ -23,8 +23,8 @@ public interface CleanUserMapper {
             "mobile, qq, email, contact_status, cancel_subscribe_time, is_bind, uid) " +
             "values" +
             "<foreach collection ='list' item='user' separator =','> " +
-            "(#{user.appId},#{user.openId},#{user.unionId},#{user.nickname},#{user.sex}," +
-            "#{user.sexId},#{user.country},#{user.province},#{user.city},#{user.language},#{user.headImgUrl}," +
+            "(#{user.appId},#{user.openid},#{user.unionid},#{user.nickname},#{user.sex}," +
+            "#{user.sexId},#{user.country},#{user.province},#{user.city},#{user.language},#{user.headimgurl}," +
             "#{user.imgId},#{user.headImgCatch},#{user.subscribe},#{user.subscribe_time},#{user.remark}," +
             "#{user.groupId},#{user.source},#{user.sourceId},#{user.createdAt},#{user.updatedAt}," +
             "#{user.mobile},#{user.qq},#{user.email},#{user.contactStatus},#{user.cancelSubscribeTime},#{user.isBind},#{user.uid})" +

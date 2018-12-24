@@ -59,11 +59,11 @@ public class UserBrickieApplicationTests {
         List<MpUser> list =new ArrayList<>();
         MpUser mpUser = new MpUser();
         mpUser.setAppId("xswl");
-        mpUser.setOpenId("xswl");
+        mpUser.setOpenid("xswl");
         mpUser.setCancelSubscribeTime(new Date());
         mpUser.setCreatedAt(new Date());
         mpUser.setUpdatedAt(new Date());
-        mpUser.setUnionId("xswl");
+        mpUser.setUnionid("xswl");
         mpUser.setEmail("xswl");
         mpUser.setSubscribe(1);
         mpUser.setGroupId(555555);

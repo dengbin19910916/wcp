@@ -1,7 +1,7 @@
 package com.midea.wcp.user.service.impl;
 
 import com.midea.wcp.commons.message.OpenIdWrapper;
-import com.midea.wcp.user.jpa.repository.SyncOpenIdDao;
+/*import com.midea.wcp.user.jpa.repository.SyncOpenIdDao;*/
 import com.midea.wcp.user.mybatis.mapper.CleanUserMapper;
 import com.midea.wcp.user.mybatis.model.MpUser;
 import com.midea.wcp.user.service.Persistence;

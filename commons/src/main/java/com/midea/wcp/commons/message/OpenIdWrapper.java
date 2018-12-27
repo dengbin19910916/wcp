@@ -20,4 +20,5 @@ public class OpenIdWrapper implements Serializable {
     private String appSecret;
     private String host;
     private Integer port;
+    private String appKey;
 }

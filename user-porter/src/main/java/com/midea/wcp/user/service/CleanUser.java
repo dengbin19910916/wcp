@@ -9,7 +9,7 @@ public interface CleanUser {
 
     void setSubOne2Zero(String originTable, String compareTable);
 
-    void pullNullData(String originTable, String compareTable, String appId, String appSecret, String host, Integer port);
+    void pullNullData(String originTable, String compareTable, String appId, String appSecret, String host, Integer port, String appKey);
 
     Integer countOpenId(String table);
 }

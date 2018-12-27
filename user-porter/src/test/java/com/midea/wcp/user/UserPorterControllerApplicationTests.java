@@ -26,7 +26,7 @@ public class UserPorterControllerApplicationTests {
 
     @Test
     public void test1() {
-        pullOpenId.pullOpenId("wxd19c5a897bbaaaae", "6dfa31490e52b36c6f4043e286a0846b", "weixincs.midea.com", 8090);
+//        pullOpenId.pullOpenId("wxd19c5a897bbaaaae", "6dfa31490e52b36c6f4043e286a0846b", "weixincs.midea.com", 8090);
     }
 
     @Test

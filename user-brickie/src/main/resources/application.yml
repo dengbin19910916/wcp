@@ -3,8 +3,8 @@ spring:
     name: @project.artifactId@
   profiles:
     active: qa
-  flyway:
-    enabled: false
+#  flyway:
+#    enabled: false
 
 server:
   port: 9095
@@ -21,8 +21,8 @@ spring:
 spring:
   profiles: qa
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    #    driver-class-name: com.mysql.jdbc.Driver
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://10.16.18.182:3306/wcp_beta?userUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
     username: wx_user
     password: Weixin12389
@@ -36,8 +36,8 @@ spring:
     jest:
       uris:
       - http://10.18.37.105:9200
-  dubbo:
-    registry: zookeeper://10.16.25.121:2182
+#  dubbo:
+#    registry: zookeeper://10.16.25.121:2182
   rabbitmq:
     host: 10.16.41.230
     username: admin

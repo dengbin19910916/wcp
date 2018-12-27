@@ -77,7 +77,7 @@ public class CleanUserImpl implements CleanUser {
     }
 
     @Override
-    public void pullNullData(String originTable, String compareTable, String appId, String appSecret, String host, Integer port) {
+    public void pullNullData(String originTable, String compareTable, String appId, String appSecret, String host, Integer port,String appKey) {
         List<String> result = cleanUserMapper.selectOpenid2Add(originTable, compareTable);
         if (result == null || result.size() == 0) {
             return;
@@ -91,11 +91,11 @@ public class CleanUserImpl implements CleanUser {
             if (i != times) {
                 List<String> temp = getContinuityElement((i - 1) * size, i * size - 1, result);
                 JsonArray jsonArray = list2JsonArray(temp);
-                rabbitMQUtil.sendToRabbitMQ(appId, appSecret, jsonArray, host, port, "getDetailExchange");
+                rabbitMQUtil.sendToRabbitMQ(appId, appSecret, jsonArray, host, port, "getDetailExchange",appKey);
             } else {
                 List<String> temp = getContinuityElement((i - 1) * size, idCount - 1, result);
                 JsonArray jsonArray = list2JsonArray(temp);
-                rabbitMQUtil.sendToRabbitMQ(appId, appSecret, jsonArray, host, port, "getDetailExchange");
+                rabbitMQUtil.sendToRabbitMQ(appId, appSecret, jsonArray, host, port, "getDetailExchange",appKey);
             }
         }
     }

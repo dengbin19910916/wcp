@@ -1,3 +1,4 @@
+/*
 package com.midea.wcp.user.jpa.repository;
 
 import com.midea.wcp.user.jpa.model.SyncOpenId;
@@ -12,3 +13,4 @@ public interface SyncOpenIdDao extends JpaRepository<SyncOpenId, Integer> {
     @Override
     <S extends SyncOpenId> List<S> saveAll(Iterable<S> iterable);
 }
+*/

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/wechat/access-token")
 public class TokenController {
-
+/*
     private final SingleTokenButler tokenButler;
 
     public TokenController(SingleTokenButler tokenButler) {
@@ -39,5 +39,5 @@ public class TokenController {
         public int getExpiresIn() {
             return accessToken.getExpiresIn();
         }
-    }
+    }*/
 }

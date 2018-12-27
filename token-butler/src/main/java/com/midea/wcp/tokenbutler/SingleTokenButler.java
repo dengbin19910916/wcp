@@ -13,9 +13,9 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ProxySelector;
 import java.net.URI;
-import java.net.http.HttpClient;
+/*import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.net.http.HttpResponse;*/
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
@@ -31,7 +31,7 @@ public class SingleTokenButler implements TokenButler {
     @Override
     public AccessToken get(String appId, String appSecret,
                            String host, Integer port) {
-        AccessToken accessToken = accessTokens.get(appId);
+        /*AccessToken accessToken = accessTokens.get(appId);
         if (accessToken == null || accessToken.isExpired()) {
             synchronized (this) {
                 if (accessToken == null || accessToken.isExpired()) {
@@ -56,10 +56,11 @@ public class SingleTokenButler implements TokenButler {
             }
         }
 
-        return accessToken;
+        return accessToken;*/
+        return null;
     }
 
-    private JsonObject getAccessTokenJson(String url, String host, Integer port) throws IOException, InterruptedException {
+   /* private JsonObject getAccessTokenJson(String url, String host, Integer port) throws IOException, InterruptedException {
         HttpClient client = host == null ? HttpClient.newHttpClient() :
                 HttpClient.newBuilder()
                         .proxy(ProxySelector.of(new InetSocketAddress(InetAddress.getByName(host), port)))
@@ -69,5 +70,5 @@ public class SingleTokenButler implements TokenButler {
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         return new JsonParser().parse(response.body()).getAsJsonObject();
-    }
+    }*/
 }

@@ -1,3 +1,4 @@
+/*
 package com.midea.wcp.user.jpa.repository;
 
 import com.midea.wcp.user.jpa.model.SyncDetail;
@@ -12,3 +13,4 @@ public interface SyncDetailDao extends JpaRepository<SyncDetail, Integer> {
     @Override
     <S extends SyncDetail> List<S> saveAll(Iterable<S> iterable);
 }
+*/

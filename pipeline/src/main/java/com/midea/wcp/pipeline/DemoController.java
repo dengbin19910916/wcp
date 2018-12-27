@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.stream.Stream;
+//import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/demo")
@@ -19,7 +19,7 @@ public class DemoController {
         this.brickie = brickie;
     }
 
-    @GetMapping("/write")
+    /*@GetMapping("/write")
     public void write(@RequestParam String tableName) {
         String[] tableNames = tableName.split(",");
         Stream.of(tableNames).parallel().forEach(table-> {
@@ -30,5 +30,5 @@ public class DemoController {
                 throw new RuntimeException(e);
             }
         });
-    }
+    }*/
 }

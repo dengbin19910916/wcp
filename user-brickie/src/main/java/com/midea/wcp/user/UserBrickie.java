@@ -1,6 +1,6 @@
 package com.midea.wcp.user;
 
-import com.alibaba.dubbo.config.annotation.Reference;
+//import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.midea.wcp.api.AccessToken;
@@ -24,8 +24,8 @@ import java.util.List;
 @Slf4j
 public class UserBrickie {
 
-    @Reference
-    private TokenButler tokenButler;
+    /*@Reference
+    private TokenButler tokenButler;*/
 
     private final CompositePersistence compositePersistence;
     private final DatabasePersistence databasePersistence;
@@ -51,7 +51,7 @@ public class UserBrickie {
             return;
         }
         for (String openId : openIDWrapper.getOpenIds()) {
-            User result = getUserDetail(openId, openIDWrapper.getAppId(), openIDWrapper.getAppSecret(), openIDWrapper.getHost(), openIDWrapper.getPort());
+            User result = getUserDetail(openId, openIDWrapper.getAppId(), openIDWrapper.getAppSecret(), openIDWrapper.getHost(), openIDWrapper.getPort(), openIDWrapper.getAppKey());
             if (result != null) {
                 result.setAppId(openIDWrapper.getAppId());
                 userList.add(result);
@@ -68,18 +68,17 @@ public class UserBrickie {
         return gson.fromJson(jsonObject, bean);
     }
 
-    private User getUserDetail(String openId, String appId, String appSecret, String host, int port) {
-        try {
-            AccessToken accessToken = tokenButler.get(appId, appSecret, host, port);
-            String url = "https://api.weixin.qq.com/cgi-bin/user/info?" +
-                    "access_token=" + accessToken.value() + "&openid=" + openId + "&lang=zh_CN";
-            JsonObject userDetails = Wechat.getResponse(url, host, port);
-            log.info(userDetails != null ? userDetails.toString() : "空");
-            return (User) JsonToObject(userDetails, User.class);
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            return null;
-        }
+    private User getUserDetail(String openId, String appId, String appSecret, String host, int port, String appKey) {
+
+//            AccessToken accessToken = tokenButler.get(appId, appSecret, host, port);
+        String accessToken = Wechat.getAccessTokenFromWcp(appKey);
+
+        String url = "https://api.weixin.qq.com/cgi-bin/user/info?" +
+                "access_token=" + accessToken + "&openid=" + openId + "&lang=zh_CN";
+        JsonObject userDetails = Wechat.getResponse(url, host, port);
+        log.info(userDetails != null ? userDetails.toString() : "空");
+        return (User) JsonToObject(userDetails, User.class);
+
     }
 
 

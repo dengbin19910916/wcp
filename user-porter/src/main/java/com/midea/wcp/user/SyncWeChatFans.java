@@ -21,7 +21,7 @@ public class SyncWeChatFans {
     }
 
     @GetMapping("/sync")
-    public void gkd(String appId, String appSecret, String host, Integer port) {
+    public void gkd(String appId, String appSecret, String host, Integer port, String appKey) {
         String tableNamePrefix = "mp_user_";
         String openidTablePrefix = "sync_open_id_";
         String originTable = tableNamePrefix + appId;
@@ -32,14 +32,14 @@ public class SyncWeChatFans {
             cleanUser.cleanOpenIdTable(compareTable);
 
             //从微信拉取open id ，保存到数据库中
-            int totalOpenId = pullOpenId.pullOpenId(appId, appSecret, host, port);
+            int totalOpenId = pullOpenId.pullOpenId(appId, appSecret, host, port, appKey);
             if (totalOpenId == 0) {
                 return;
             }
 
             //30s扫描一次，是否已经完成拉取openid并保存到数据库的工作
             while (!completeSaveOpenId2Db(totalOpenId, compareTable)) {
-                Thread.sleep(30000L);
+                Thread.sleep(10000L);
             }
 
             //原粉丝数据表中重复的open id删除
@@ -52,7 +52,7 @@ public class SyncWeChatFans {
             cleanUser.setSubOne2Zero(originTable, compareTable);
 
             //新增订阅的粉丝获取详情
-            cleanUser.pullNullData(originTable, compareTable, appId, appSecret, host, port);
+            cleanUser.pullNullData(originTable, compareTable, appId, appSecret, host, port,appKey);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -64,4 +64,4 @@ public class SyncWeChatFans {
         int saveNum = cleanUser.countOpenId(table);
         return saveNum == totalOpenId;
     }
-    }
+}

@@ -20,11 +20,11 @@ public class RabbitMQUtil {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendToRabbitMQ(String appId, String appSecret, JsonArray openidArray, String host, Integer port, String Exchange) {
+    public void sendToRabbitMQ(String appId, String appSecret, JsonArray openidArray, String host, Integer port, String Exchange, String appKey) {
         List<String> openIds = new ArrayList<>();
         for (JsonElement openid : openidArray) {
             openIds.add(openid.getAsString());
         }
-        rabbitTemplate.convertAndSend(Exchange, "WeChat", new OpenIdWrapper(openIds, appId, appSecret, host, port));
+        rabbitTemplate.convertAndSend(Exchange, "WeChat", new OpenIdWrapper(openIds, appId, appSecret, host, port, appKey));
     }
 }

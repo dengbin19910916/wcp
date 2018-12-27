@@ -1,7 +1,7 @@
 package com.midea.wcp.user;
 
 import com.midea.wcp.user.jpa.model.SyncDetail;
-import com.midea.wcp.user.jpa.repository.SyncDetailDao;
+/*import com.midea.wcp.user.jpa.repository.SyncDetailDao;*/
 import com.midea.wcp.user.mybatis.mapper.CleanUserMapper;
 import com.midea.wcp.user.mybatis.model.MpUser;
 import org.junit.Test;
@@ -21,8 +21,8 @@ public class UserBrickieApplicationTests {
     @Autowired
     private CleanUserMapper cleanUserMapper;
 
-    @Autowired
-    private SyncDetailDao syncDetailDao;
+    /*@Autowired
+    private SyncDetailDao syncDetailDao;*/
 
 
     @Test
@@ -51,7 +51,7 @@ public class UserBrickieApplicationTests {
         detail1.setCreatedAt(new Date());
         detail1.setUpdatedAt(new Date());
         list.add(detail2);
-        syncDetailDao.saveAll(list);
+        /*syncDetailDao.saveAll(list);*/
     }
 
     @Test

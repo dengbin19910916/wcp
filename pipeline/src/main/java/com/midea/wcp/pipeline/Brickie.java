@@ -4,8 +4,8 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
+/*import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;*/
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,7 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 @Component
 public class Brickie {
 
-    @Value("${spring.datasource.driver-class-name}")
+    /*@Value("${spring.datasource.driver-class-name}")
     private String driverClassName;
     @Value("${spring.datasource.url}")
     private String url;
@@ -175,17 +175,17 @@ public class Brickie {
     }
 
 
-    /**
+    *//**
      * 返回字段是否需要持久化。
      *
      * @param field 数据对象的字段
      * @return 需要持久化字段的类型
-     */
+     *//*
     private static boolean needful(Field field) {
         Class<?> type = field.getType();
         return type == String.class
                 || type == Integer.class
                 || type == Long.class
                 || type == List.class;
-    }
+    }*/
 }

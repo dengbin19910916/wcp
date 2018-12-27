@@ -1,11 +1,11 @@
 package com.midea.wcp.user;
 
-import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
+//import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@EnableDubboConfiguration
+//@EnableDubboConfiguration
 @SpringBootApplication
 @MapperScan("com.midea.wcp.user.mybatis.mapper")
 public class UserPorterApplication {

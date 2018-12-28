@@ -12,4 +12,6 @@ public interface CleanUser {
     void pullNullData(String originTable, String compareTable, String appId, String appSecret, String host, Integer port, String appKey);
 
     Integer countOpenId(String table);
+
+    Integer setSubNull2Zero(String originTable);
 }

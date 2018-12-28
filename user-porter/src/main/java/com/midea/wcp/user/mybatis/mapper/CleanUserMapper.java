@@ -90,4 +90,10 @@ public interface CleanUserMapper {
      */
     @Select("select COUNT(id) from ${table}")
     Integer queryOpenIdNum(@Param("table") String table);
+
+    /**
+     * fix subscribe null
+     */
+    @Select("update ${table} set subscribe = 0 where subscribe is null")
+    Integer setSubNull2Zero(@Param("table") String table);
 }

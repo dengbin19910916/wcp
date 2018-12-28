@@ -157,4 +157,9 @@ public class CleanUserImpl implements CleanUser {
         return cleanUserMapper.queryOpenIdNum(table);
     }
 
+    @Override
+    public Integer setSubNull2Zero(String originTable) {
+        return cleanUserMapper.setSubNull2Zero(originTable);
+    }
+
 }

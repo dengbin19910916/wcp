@@ -10,6 +10,9 @@ server:
 mybatis:
   type-aliases-package: com.midea.wcp.user.mybatis.model
 
+wcp:
+
+
 ---
 spring:
   profiles: dev

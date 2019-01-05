@@ -20,6 +20,16 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-dubbo-adapter</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-transport-simple-http</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+        <dependency>
             <groupId>com.midea.wcp</groupId>
             <artifactId>commons</artifactId>
         </dependency>
